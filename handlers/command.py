@@ -1,7 +1,7 @@
 from tornado.web import RequestHandler
 from log import log
 
-from serial import ser
+from serial_ import ser
 
 class CommandHandler(RequestHandler):
     def prepare(self):
@@ -28,7 +28,7 @@ class CommandHandler(RequestHandler):
             ])
         except Exception as e:
             log.exception(e)
-            
+
         self.write({
             'status_byte': f'0x{status_byte:02x}',
             'data_byte1': f'0x{data_byte1:02x}',
