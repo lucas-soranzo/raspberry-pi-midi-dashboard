@@ -6,6 +6,7 @@ import tornado.ioloop
 import tornado.web
 
 from handlers.main import MainHandler
+from handlers.command import CommandHandler
 
 from log import log
 
@@ -18,6 +19,7 @@ def make_app():
     }
     return tornado.web.Application([
         (r"/", MainHandler),
+        (r"/command", CommandHandler),
         (r"/static/(.*)", tornado.web.StaticFileHandler,dict(path=settings['static_path'])),
     ], **settings)
 
