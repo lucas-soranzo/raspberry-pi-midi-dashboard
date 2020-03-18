@@ -1,5 +1,6 @@
-import tornado.web
+from tornado.web import RequestHandler
+from templates.loader import loader
 
-class MainHandler(tornado.web.RequestHandler):
+class MainHandler(RequestHandler):
     def get(self):
-        self.write("Hello, world")
+        self.write(loader.load('dashboard.html').generate())
