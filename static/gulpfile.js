@@ -2,6 +2,7 @@ const { src, dest, watch, task } = require('gulp');
 const sass = require('gulp-sass'); 
 const minifyCSS = require('gulp-csso');
 const minifyJS = require('gulp-minify');
+const rename = require('gulp-rename');
 
 sass.compiler = require('node-sass');
 
@@ -19,6 +20,7 @@ task('scss', () =>
     src('src/scss/*.scss')
         .pipe(sass.sync().on('error', sass.logError))
         .pipe(minifyCSS())
+        .pipe(rename({suffix: '.min'}))
         .pipe(dest('./build/css')))
 
 task('default', () => {
