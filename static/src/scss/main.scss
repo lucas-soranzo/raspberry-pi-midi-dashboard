@@ -1,8 +1,33 @@
 body {
+    font-family: Rubik;
     padding: 20px;
+
+    * {
+        vertical-align: middle;
+    }
+    div.logo {
+        img {
+            opacity: .5;
+        }
+        h1 {
+            display: inline;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0;
+            vertical-align: middle;
+            font-size: 22px;
+            opacity: .5;
+        }
+        
+        @media (max-width: 1000px) {
+            text-align: center;
+            margin-bottom: 1rem;            
+        }
+    }
 
     hr {
         border-color: #fff;
+        opacity: .5;
     }
     #commandContainer {
         i.fas {
