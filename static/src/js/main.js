@@ -5,13 +5,26 @@
             'byte1': 0xCC,
             'byte2': 0x00,
             'byte3': 0x00,
-            'name': 'New Command'
+            'name': 'New Command',
+            'icon': null,
+            'color': 'light',
+            'size': 'lg',
+            'style': 'outline'
         }
 
         Object.assign(defaults, options)
         
-        this.addClass('btn btn-light btn-lg mr-3')
-        this.html(defaults.name)
+        this.addClass([
+            'btn',
+            `btn${defaults.style && defaults.style != 'Solid' ? '-' + defaults.style.toLocaleLowerCase() : ''}-${defaults.color.toLocaleLowerCase()}`,
+            `btn${defaults.size ? '-' + defaults.size.toLocaleLowerCase() : ''}`,
+            'mr-3',
+        ].join(' '))
+
+        let content = defaults.name
+        if (defaults.icon) { content = `<i class="fas fa-${defaults.icon.toLocaleLowerCase()}"></i>${content}`}
+
+        this.html(content)
         this.appendTo('#commandContainer')
         this.on('click', e => {
             this.trigger('blur')
@@ -71,9 +84,36 @@ $('#commandForm').on('submit', e => {
 
     const data = new FormData(e.target)
 
-    const parsed = ['name', 'byte1', 'byte2', 'byte3'].reduce((reduced, key) => {
+    const parsed = ['name', 'icon', 'color', 'size', 'style', 'byte1', 'byte2', 'byte3'].reduce((reduced, key) => {
         reduced[key] = data.get(key)
         return reduced;
     }, {})
     Commands.push(parsed)
+
+    $('#commandFormModal').modal('hide')
 })
+
+var curZoom = 100;
+
+const updateZoom = step => {
+    var zoomStep = 20;
+    
+    curZoom += step * zoomStep;
+
+    window.localStorage.setItem('zoom', curZoom)
+    $('body').css('zoom', ` ${curZoom}%`);
+}
+
+const storageZoom = window.localStorage.getItem('zoom')
+if (storageZoom) { 
+    try {
+        curZoom = parseInt(storageZoom)
+    } catch (error) {
+        window.localStorage.removeItem('zoom')
+    }
+ }
+$('body').css('zoom', ` ${curZoom}%`);
+
+
+$('#zoomIn').on('click', () => updateZoom(1));
+$('#zoomOut').on('click', () => updateZoom(-1));

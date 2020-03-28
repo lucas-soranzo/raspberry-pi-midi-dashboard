@@ -2,6 +2,14 @@
 
 {% block content %}
     <div class="row">
+        <div class="col">
+            <button id="zoomIn" class="btn btn-outline-light py-2">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button id="zoomOut" class="btn btn-outline-light py-2">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
         <div class="col text-right">
             <button class="btn btn-outline-danger" id="clearCommands">Clear</button>
             <button class="btn btn-outline-light" data-toggle="modal" data-target="#commandFormModal">Add Command</button>
@@ -11,9 +19,7 @@
     <hr>
 
     <div class="row">
-        <div id="commandContainer" class="col">
-            
-        </div>
+        <div id="commandContainer" class="col"></div>
     </div>
 
     <div class="modal fade" id="commandFormModal" tabindex="-1" role="dialog" aria-labelledby="commandFormModalLabel" aria-hidden="true">
@@ -26,8 +32,33 @@
               </button>
             </div>
             <div class="modal-body">
-                <form id="commandForm">
+                <form id="commandForm" class="mb-0">
                     <input name="name" type="text" class="form-control mb-3" placeholder="New Command" aria-label="Command Name" aria-describedby="basic-addon1">
+                    <input name="icon" type="text" class="form-control mb-3" placeholder="Icon (optional)" aria-label="Icon Class" aria-describedby="basic-addon1">
+                    
+                    <select name="color" class="form-control mb-3">
+                        <option>Primary</option>
+                        <option>Secondary</option>
+                        <option>Success</option>
+                        <option>Danger</option>
+                        <option>Warning</option>
+                        <option>Info</option>
+                        <option>Light</option>
+                        <option>Dark</option>
+                        <option>White</option>
+                    </select>
+                    
+                    <select name="size" class="form-control mb-3">
+                        <option value="xs">Extra Small</option>
+                        <option value="sm">Small</option>
+                        <option value="">Normal</option>
+                        <option value="lg" selected>Large</option>
+                    </select>
+                    
+                    <select name="style" class="form-control mb-3">
+                        <option selected>Outline</option>
+                        <option>Solid</option>
+                    </select>
 
                     <div class="row">
                         <div class="col">
@@ -35,7 +66,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">0x</span>
                                 </div>
-                                <input name="byte1" type="text" class="form-control" placeholder="CC" aria-label="Command Byte 0" aria-describedby="basic-addon1">
+                                <input name="byte1" type="text" class="form-control" maxlength="2" placeholder="CC" aria-label="Command Byte 0" aria-describedby="basic-addon1">
                             </div>
                         </div>
                         <div class="col">
@@ -43,7 +74,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">0x</span>
                                 </div>
-                                <input name="byte2" type="text" class="form-control" placeholder="00" aria-label="Command Byte 1" aria-describedby="basic-addon1">
+                                <input name="byte2" type="text" class="form-control" maxlength="2" placeholder="00" aria-label="Command Byte 1" aria-describedby="basic-addon1">
                             </div>                        
                         </div>
                         <div class="col">
@@ -51,14 +82,14 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1">0x</span>
                                 </div>
-                                <input name="byte3" type="text" class="form-control" placeholder="00" aria-label="Command Byte 2" aria-describedby="basic-addon1">
+                                <input name="byte3" type="text" class="form-control" maxlength="2" placeholder="00" aria-label="Command Byte 2" aria-describedby="basic-addon1">
                             </div>                        
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline-secondary pull-left" data-dismiss="modal">Close</button>
               <button type="submit" form="commandForm" class="btn btn-primary">Create</button>
             </div>
           </div>
