@@ -35,7 +35,7 @@
                     data_byte1: defaults.byte2,
                     data_byte2: defaults.byte3
                 },
-                success: console.log
+                success: data => getToast({text: Object.values(data).join(' ')})
             })
         })
 
@@ -131,3 +131,26 @@ $('#requestFullScreen').on('click', () => {
       cancelFullScreen.call(doc);
     }
 })
+
+function getToast(config) {
+    const defaults = {
+        'title': 'Pi Midi Dashboard',
+        'text': '',
+    }
+    Object.assign(defaults, config)
+    const toast = `
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+            <div class="toast-header">
+                <img src="/static/favicon.png" class="rounded mr-2" alt="...">
+                <strong class="mr-auto">${defaults.title}</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                ${defaults.text}
+            </div>
+        </div>`
+    
+    $(toast).appendTo('body').toast('show')
+}
