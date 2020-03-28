@@ -20,14 +20,17 @@ class CommandHandler(RequestHandler):
 
         log.info('Midi CMD: 0x{:x} 0x{:x} 0x{:x}'.format(status_byte, data_byte1, data_byte2))
 
-        try:
-            ser.write([
-                status_byte,
-                data_byte1,
-                data_byte2,
-            ])
-        except Exception as e:
-            log.exception(e)
+        if ser is not None:
+            try:
+                ser.write([
+                    status_byte,
+                    data_byte1,
+                    data_byte2,
+                ])
+            except Exception as e:
+                log.exception(e)
+        else:
+            log.warning('No serial por avaiable to write.')
 
         self.write({
             'status_byte': f'0x{status_byte:02x}',
