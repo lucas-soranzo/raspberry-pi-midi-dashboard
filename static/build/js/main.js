@@ -43,7 +43,7 @@
 
             this.on('click', e => sendCommand(defaults.byte1, defaults.byte2, defaults.byte3))
         } else if(defaults.type === 'slider') {
-            this.on('change', e => sendCommand(defaults.byte1, defaults.byte2, parseInt((e.target.value / 100) * 127)))            
+            this.on('change', e => sendCommand(defaults.byte1, defaults.byte2, Number(parseInt((e.target.value / 100) * 127)).toString(16)))            
         }
         
         this.addClass([
@@ -70,7 +70,6 @@ const Commands = new class {
         } else if(cmd.type.toLocaleLowerCase() === 'slider') {
             ele = $('<input>', { type: "range", name: "slider", orient: "vertical", }).midiCommand(cmd)
         }
-        console.log(ele)
 
         ele.appendTo('#commandContainer')
     }
