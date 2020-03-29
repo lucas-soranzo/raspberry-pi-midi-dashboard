@@ -43,7 +43,12 @@
 
             this.on('click', e => sendCommand(defaults.byte1, defaults.byte2, defaults.byte3))
         } else if(defaults.type === 'slider') {
-            this.on('change', e => sendCommand(defaults.byte1, defaults.byte2, Number(parseInt((e.target.value / 100) * 127)).toString(16)))   
+            classes = [
+                ...classes,
+                `outline-${defaults.color}`
+            ]
+
+            this.on('input', e => sendCommand(defaults.byte1, defaults.byte2, Number(parseInt((e.target.value / 100) * 127)).toString(16)))   
             this.on('dblclick', e => {
                 e.preventDefault()
                 e.target.value = 71.653543307
@@ -51,9 +56,7 @@
             })         
         }
         
-        this.addClass([
-            ...classes,
-        ].join(' '))
+        this.addClass(classes.join(' '))
 
         this.html(content)
 
@@ -67,13 +70,14 @@ const Commands = new class {
         this.load()
     }
 
-    createElement(cmd) {
-        let ele = null;
-        console.log(cmd.type)
+    createElement(cmd) {        
+        let ele = $('<command>', { class:`command-container outline-${cmd.color.toLocaleLowerCase()}` })
+
         if (cmd.type.toLocaleLowerCase() === 'button') {
             ele = $('<button>').midiCommand(cmd)
         } else if(cmd.type.toLocaleLowerCase() === 'slider') {
-            ele = $('<input>', { type: "range", name: "slider", orient: "vertical", }).midiCommand(cmd)
+            ele.append($('<input>', { type: "range", name: "slider", orient: "vertical", }).midiCommand(cmd))
+            ele.append($('<span>', { class: "command-name" }).html(cmd.name))
         }
 
         ele.appendTo('#commandContainer')

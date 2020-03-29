@@ -1,3 +1,14 @@
+html {
+    --color-primary: #007bff;
+    --color-seconda: #6c757d;
+    --color-success: #28a745;
+    --color-info: #17a2b8;
+    --color-warning: #ffc107;
+    --color-danger: #dc3545;
+    --color-light: #f8f9fa;
+    --color-dark: #343a40;
+}
+
 body {
     font-family: Rubik;
     padding: 20px;
@@ -42,6 +53,63 @@ body {
     }
 }
   
+.command-container {
+    display: inline-block;
+    padding: 1rem;
+    vertical-align: top;
+
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    
+    &[class*="outline-"] {
+        border: 1px solid;
+        border-radius: .3rem;
+
+        &.outline-primary {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        &.outline-secondary {
+            color: var(--color-secondary);
+            border-color: var(--color-secondary);
+        }
+        
+        &.outline-success {
+            color: var(--color-success);
+            border-color: var(--color-success);
+        }
+        
+        &.outline-info {
+            color: var(--color-info);
+            border-color: var(--color-info);
+        }
+        
+        &.outline-warning {
+            color: var(--color-warning);
+            border-color: var(--color-warning);
+        }
+        
+        &.outline-danger {
+            color: var(--color-danger);
+            border-color: var(--color-danger);
+        }
+        
+        &.outline-light {
+            color: var(--color-light);
+            border-color: var(--color-light);
+        }    
+        
+        &.outline-dark {
+            color: var(--color-dark);
+            border-color: var(--color-dark);
+        }  
+    }
+
+    span.command-name {
+        display: block;
+    }
+}
 /* The slider itself */
 input[type=range] {
     -webkit-appearance: slider-vertical; /* WebKit */
@@ -54,7 +122,7 @@ input[type=range] {
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
     writing-mode: bt-lr; /* IE */
-    margin: 20px 40px;
+    margin: 1rem 2.5rem;
 }
 
 /* Mouse-over effects */
@@ -66,15 +134,15 @@ input[type=range]:hover {
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    width: 50px; /* Set a specific slider handle width */
-    height: 20px; /* Slider handle height */
+    width: 2.5rem; /* Set a specific slider handle width */
+    height: 1rem; /* Slider handle height */
     background: #fff; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
 
 input[type=range]::-moz-range-thumb {
-    width: 50px; /* Set a specific slider handle width */
-    height: 20px; /* Slider handle height */
+    width: 2.5rem; /* Set a specific slider handle width */
+    height: 1rem; /* Slider handle height */
     background: #fff; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
