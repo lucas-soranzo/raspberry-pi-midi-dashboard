@@ -110,39 +110,67 @@ body {
         display: block;
     }
 }
-/* The slider itself */
-input[type=range] {
-    -webkit-appearance: slider-vertical; /* WebKit */
-    appearance: slider-vertical;
-    width: 10px; /* Full-width */
-    height: 200px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
-    writing-mode: bt-lr; /* IE */
-    margin: 1rem 2.5rem;
-}
 
-/* Mouse-over effects */
-input[type=range]:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-}
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 2.5rem; /* Set a specific slider handle width */
-    height: 1rem; /* Slider handle height */
-    background: #fff; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-}
+input {
+    &[type=range] {
+        --width: 2.5rem;
+        --height: 200px;
 
-input[type=range]::-moz-range-thumb {
-    width: 2.5rem; /* Set a specific slider handle width */
-    height: 1rem; /* Slider handle height */
-    background: #fff; /* Green background */
-    cursor: pointer; /* Cursor on hover */
+        --horizontal-compensation: calc(calc(var(--height) / -2) + calc(var(--width)));
+        --vertical-compensation: calc(calc(var(--width) / -2) + calc(var(--height) / 1.8));        
+        
+        -webkit-appearance: none; /* WebKit */
+                appearance: none;
+  
+        width: var(--height);
+        height: var(--width);
+        display: block;
+        position: relative;
+        margin-left: var(--horizontal-compensation);
+        margin-right: var(--horizontal-compensation);
+        margin-top: var(--vertical-compensation);
+        margin-bottom: var(--vertical-compensation);
+
+        -webkit-transform:rotate(-90deg); /* Safari and Chrome */        
+           -moz-transform:rotate(-90deg);
+             -o-transform:rotate(-90deg);
+            -ms-transform:rotate(-90deg);
+        
+        background: transparent;
+    }
+
+    @mixin track() {
+        height: 10px; /* Full-width */
+        width: var(--height); /* Specified height */
+        background: #d3d3d3A0; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+
+    }
+
+    @mixin thumb() { 
+        --thumb-width: 2.5rem;
+        --thumb-height: 1rem;
+
+        -webkit-appearance: none !important; /* Override default look */
+                appearance: none !important;
+                
+        height: var(--thumb-width); /* Set a specific slider handle width */
+        width: var(--thumb-height); /* Slider handle height */
+        margin-top: calc(calc(var(--thumb-width) / -2) + 5px);
+        border-radius: 5px;
+        background: #ffffff;
+        cursor: pointer; /* Cursor on hover */
+    }
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+    &::-ms-thumb { @include thumb; }
+    &::-moz-range-thumb { @include thumb; }
+    &::-webkit-slider-thumb { @include thumb; }    
+    
+    &::-ms-track { @include track; }
+    &::-moz-range-track { @include track; }
+    &::-webkit-slider-runnable-track { @include track; }    
 }

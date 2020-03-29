@@ -76,7 +76,7 @@ const Commands = new class {
         if (cmd.type.toLocaleLowerCase() === 'button') {
             ele = $('<button>').midiCommand(cmd)
         } else if(cmd.type.toLocaleLowerCase() === 'slider') {
-            ele.append($('<input>', { type: "range", name: "slider", orient: "vertical", }).midiCommand(cmd))
+            ele.append($('<input>', { type: "range", name: "slider", }).midiCommand(cmd))
             ele.append($('<span>', { class: "command-name" }).html(cmd.name))
         }
 
