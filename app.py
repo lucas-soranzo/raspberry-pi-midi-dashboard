@@ -1,6 +1,7 @@
 import sys
 import asyncio
 import os
+import subprocess
 
 import tornado.ioloop
 import tornado.web
@@ -16,7 +17,8 @@ if sys.platform == 'win32':
 def make_app():
     settings = {
         "static_path": os.path.join(os.path.dirname(__file__), "static"),
-        "debug": True
+        "debug": True,
+        "commit_hash": subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip()
     }
     return tornado.web.Application([
         (r"/", MainHandler),

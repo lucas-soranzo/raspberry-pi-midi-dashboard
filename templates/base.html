@@ -7,7 +7,7 @@
         
         <link rel="stylesheet" href="/static/vendors/bootstrap-4.4.1-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="/static/vendors/fontawesome-free-5.13.0-web/css/all.min.css">
-        <link rel="stylesheet" href="/static/build/css/main.min.css">
+        <link rel="stylesheet" href="/static/build/css/main.min.css?c={{commit_hash}}">
     </head>
     <body class="bg-dark">
         {% block content %}
@@ -16,5 +16,5 @@
 
     <script src="/static/vendors/jquery-3.4.1/jquery-3.4.1.min.js"></script>
     <script src="/static/vendors/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
-    <script src="/static/build//js/main.min.js"></script>
+    <script src="/static/build//js/main.min.js?c={{commit_hash}}"></script>
 </html>
