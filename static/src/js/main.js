@@ -1,6 +1,12 @@
 (function( $ ) {
+    const sendCommand = (status_byte, data_byte1, data_byte2) =>
+        $.ajax({
+            url:'/command',
+            data: { status_byte, data_byte1, data_byte2 },
+            success: data => getToast({text: Object.values(data).join(' ')})
+        });
+
     $.fn.midiCommand = function(options) {
-        console.log(this)
         let defaults = {
             'byte1': 0xCC,
             'byte2': 0x00,
@@ -9,35 +15,42 @@
             'icon': null,
             'color': 'light',
             'size': 'lg',
-            'style': 'outline'
+            'style': 'outline',
+            'type': 'button'
         }
 
         Object.assign(defaults, options)
+
+        defaults.icon = defaults.icon.toLocaleLowerCase()
+        defaults.style = defaults.style.toLocaleLowerCase()
+        defaults.color = defaults.color.toLocaleLowerCase()
+        defaults.type = defaults.type.toLocaleLowerCase()
+
+        let content = ''
+        let classes = []
+
+        if (defaults.type === 'button') {            
+            if (defaults.icon) { content = `<i class="fas fa-${defaults.icon}"></i>${content}`}
+            else { content = defaults.name}
+            
+            classes = [
+                ...classes,
+                'btn',
+                `btn${defaults.style && defaults.style != 'Solid' ? '-' + defaults.style : ''}-${defaults.color}`,
+                `btn${defaults.size ? '-' + defaults.size : ''}`,
+                'mr-3',
+            ]
+
+            this.on('click', e => sendCommand(defaults.byte1, defaults.byte2, defaults.byte3))
+        } else if(defaults.type === 'slider') {
+            this.on('change', e => sendCommand(defaults.byte1, defaults.byte2, parseInt((e.target.value / 100) * 127)))            
+        }
         
         this.addClass([
-            'btn',
-            `btn${defaults.style && defaults.style != 'Solid' ? '-' + defaults.style.toLocaleLowerCase() : ''}-${defaults.color.toLocaleLowerCase()}`,
-            `btn${defaults.size ? '-' + defaults.size.toLocaleLowerCase() : ''}`,
-            'mr-3',
+            ...classes,
         ].join(' '))
 
-        let content = defaults.name
-        if (defaults.icon) { content = `<i class="fas fa-${defaults.icon.toLocaleLowerCase()}"></i>${content}`}
-
         this.html(content)
-        this.appendTo('#commandContainer')
-        this.on('click', e => {
-            this.trigger('blur')
-            $.ajax({
-                url:'/command',
-                data: {
-                    status_byte: defaults.byte1,
-                    data_byte1: defaults.byte2,
-                    data_byte2: defaults.byte3
-                },
-                success: data => getToast({text: Object.values(data).join(' ')})
-            })
-        })
 
         return this
     }
@@ -50,7 +63,16 @@ const Commands = new class {
     }
 
     createElement(cmd) {
-        return $('<button>').midiCommand(cmd)
+        let ele = null;
+        console.log(cmd.type)
+        if (cmd.type.toLocaleLowerCase() === 'button') {
+            ele = $('<button>').midiCommand(cmd)
+        } else if(cmd.type.toLocaleLowerCase() === 'slider') {
+            ele = $('<input>', { type: "range", name: "slider", orient: "vertical", }).midiCommand(cmd)
+        }
+        console.log(ele)
+
+        ele.appendTo('#commandContainer')
     }
 
     push(cmd) {
@@ -84,7 +106,7 @@ $('#commandForm').on('submit', e => {
 
     const data = new FormData(e.target)
 
-    const parsed = ['name', 'icon', 'color', 'size', 'style', 'byte1', 'byte2', 'byte3'].reduce((reduced, key) => {
+    const parsed = ['name', 'icon', 'color', 'size', 'style', 'type', 'byte1', 'byte2', 'byte3'].reduce((reduced, key) => {
         reduced[key] = data.get(key)
         return reduced;
     }, {})
