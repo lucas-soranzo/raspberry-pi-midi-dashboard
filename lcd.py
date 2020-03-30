@@ -20,17 +20,18 @@ except Exception as e:
     lcd.print_line(e, line=1)
     log.exception(e)
 
-async def loop():
-    while 1:
-        supervisor_status = subprocess.getoutput('supervisorctl status')
-        supervisor_split = list(filter(lambda s: s, supervisor_status.split(' ')))
+if __name__ == '__main__':
+    async def loop():
+        while 1:
+            supervisor_status = subprocess.getoutput('supervisorctl status')
+            supervisor_split = list(filter(lambda s: s, supervisor_status.split(' ')))
 
-        if len(supervisor_split) > 1:
-            line_text = supervisor_split[1] 
-            line_text += (' ' * (16 - (len(line_text) + 5)) ) + datetime.now().strftime('%H:%M')
-            lcd.print_line(line_text, line=1)
+            if len(supervisor_split) > 1:
+                line_text = supervisor_split[1] 
+                line_text += (' ' * (16 - (len(line_text) + 5)) ) + datetime.now().strftime('%H:%M')
+                lcd.print_line(line_text, line=1)
 
-        await asyncio.sleep(5)
+            await asyncio.sleep(5)
 
-asyncio.get_event_loop().run_until_complete(loop())
+    asyncio.get_event_loop().run_until_complete(loop())
     

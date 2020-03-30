@@ -2,6 +2,7 @@ from tornado.web import RequestHandler
 from log import log
 
 from serial_ import ser
+from rtmidi_ import midiout
 
 class CommandHandler(RequestHandler):
     def prepare(self):
@@ -20,17 +21,23 @@ class CommandHandler(RequestHandler):
 
         log.info('Midi CMD: 0x{:x} 0x{:x} 0x{:x}'.format(status_byte, data_byte1, data_byte2))
 
-        if ser is not None:
-            try:
-                ser.write([
-                    status_byte,
-                    data_byte1,
-                    data_byte2,
-                ])
-            except Exception as e:
-                log.exception(e)
-        else:
-            log.warning('No serial por avaiable to write.')
+        message = [
+            status_byte,
+            data_byte1,
+            data_byte2,
+        ]
+
+        try:
+            if ser is not None:
+                log.debug('Sending serial message')
+                ser.write(message)
+            elif midiout:
+                log.debug('Sending ALSA message')
+                midiout.send_message(message)
+            else:
+                log.warning('No serial port avaiable to write')
+        except Exception as e:
+            log.exception(e)
 
         self.write({
             'status_byte': f'0x{status_byte:02x}',
